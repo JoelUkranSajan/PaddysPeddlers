@@ -33,5 +33,6 @@ The frontend of the application is developed using HTML, JavaScript, and CSS. Th
 
 Youtube Link: https://www.youtube.com/watch?v=lYO35chaPpc&t=78s
 
+## App Screenshots
 
 ![alt text](Images/Paddys_Peddlers_1.png "Web Application")
