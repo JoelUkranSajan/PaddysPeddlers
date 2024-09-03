@@ -29,4 +29,4 @@ Data stored in the RDS will be managed with MySQL.
 5. Host python data request script on Flask for use by frontend.
 
 ## Frontend
-
+The frontend of the application is developed using HTML, JavaScript, and CSS. The design features an embedded Google Map for visualizing bike station locations and real-time data overlays. The user interface is tailored for ease of use, offering an intuitive way to view and interact with the data provided by the backend.
