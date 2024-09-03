@@ -32,3 +32,6 @@ Data stored in the RDS will be managed with MySQL.
 The frontend of the application is developed using HTML, JavaScript, and CSS. The design features an embedded Google Map for visualizing bike station locations and real-time data overlays. The user interface is tailored for ease of use, offering an intuitive way to view and interact with the data provided by the backend.
 
 Youtube Link: https://www.youtube.com/watch?v=lYO35chaPpc&t=78s
+
+
+![alt text](Images/Paddys_Peddlers_1.jpg "Web Application")
