@@ -1,0 +1,6 @@
+
+Error: json_to_list() function error - FNF: [Errno 2] No such file or directory: '/home/ubuntu/git/SWE-Project/DB/Data/stations_raw.json'
+File:error_log.txt:2024-04-10 21:27:34.036873 
+Error: json_to_list() function error - FNF: [Errno 2] No such file or directory: '/home/ubuntu/git/SWE-Project/DB/Data/stations_raw.json'
+File:error_log.txt:2024-04-10 21:28:10.140993 
+Error: json_to_list() function error - FNF: [Errno 2] No such file or directory: '/Data/stations_raw.json'

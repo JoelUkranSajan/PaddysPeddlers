@@ -1,0 +1,281 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Paddys Peddlers</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/index.css') }}"
+    />
+    <script
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyArp6tllN6HakhjiBSp2Du8c0okuaam0DE&callback=initMap&libraries=places,geometry,maps,marker,visualization&v=beta"
+    ></script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclustererplus@1.0.1/dist/markerclustererplus.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- <link rel="icon" href="./images/logo/Logo_2.png" type="image/x-icon"> -->
+  </head>
+  <body>
+    <!-- Header -->
+    <div id="headerContainer">
+      <div id="headerBg"></div>
+      <div id="header">
+        <div>
+          <img
+            id="logo"
+            class="logo_image"
+            src="{{url_for('static', filename='images/logo/Logo_6.png')}}"
+            alt=""
+          />
+          <div id="logo_name">PADDY'S PEDDLERS</div>
+        </div>
+        <div id="bg_blur"></div>
+        <!-- Header Tabs -->
+        <!-- <div class="header_tabs">
+          <div class="aquamare_bold">BOOK A BIKE</div>
+          <div>Map</div>
+          <div>Help</div>
+        </div> -->
+      </div>
+    </div>
+
+    <!-- Main Body -->
+    <div id="mainBody">
+      <div id="errorMessageContainer">
+        <div id="errorMessageBox">
+          <div id="errorTitle">
+            <img
+              style="padding: 0px 10px; height: 40px; width: 40px"
+              src="../static/images/icons/error.png"
+              alt=""
+            />
+            <p id="errorTitleMessage"></p>
+          </div>
+          <div id="errorMessage"></div>
+          <div style="display: flex; justify-content: end">
+            <button class="purpleButton" onclick="onClosePressed(this)">
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+      <div id="searchBarContainer">
+        <div id="searchBox">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Search"
+            onkeydown="handleKeyDown(event)"
+            oninput="handleInput()"
+            autofocus
+          />
+          <button onclick="searchLocation()" class="purpleButton">
+            Search
+          </button>
+        </div>
+        <p id="searchText">
+          Search for an EIR code, nearby street, or station number
+        </p>
+      </div>
+      <div id="searchOptionContainer">
+        <ul id="stationList"></ul>
+      </div>
+      <div id="searchResultContainer">
+        <div
+          style="display: flex; justify-content: end; margin: 0px 0px 5px 10px"
+          onclick="closePopups(this)"
+        >
+          <img class="closeBtn" src="../static/images/icons/close.png" alt="" />
+        </div>
+        <div class="header">
+          <div>St. No</div>
+          <div>Name</div>
+          <div>Bikes</div>
+          <div>Stands</div>
+        </div>
+        <div id="stationsList"></div>
+      </div>
+      <div id="stationInfoContainer">
+        <div
+          style="display: flex; justify-content: end; margin: 0px 0px 5px 10px"
+          onclick="closePopups(this)"
+        >
+          <img class="closeBtn" src="../static/images/icons/close.png" alt="" />
+        </div>
+        <div class="header stationHeader">Status</div>
+        <div id="stationStatusId" class="header stationColumn"></div>
+        <div class="header stationHeader">Station Number</div>
+        <div id="stationNumberId" class="header stationColumn"></div>
+        <div class="header stationHeader">Station Address</div>
+        <div id="stationAddressId" class="header stationColumn"></div>
+        <div class="header stationHeader">Bikes Available</div>
+        <div id="stationBikesId" class="header stationColumn"></div>
+        <div class="header stationHeader">Stands Available</div>
+        <div id="stationStandsId" class="header stationColumn"></div>
+        <div style="display: flex">
+          <div class="primary_btn" onclick="toggleRidePlannerPopup()">
+            Plan A Ride!
+          </div>
+          <div class="primary_btn" onclick="toggleChartPopup()">
+            Station Chart
+          </div>
+        </div>
+      </div>
+      <div id="weatherContainer">
+        <div id="weatherBg"></div>
+        <div id="weatherBox">
+          <div id="locationId">
+            <img
+              id="locationImageId"
+              src="../static/images/icons/location.png"
+            />
+            <p id="locationTextId"></p>
+          </div>
+          <div id="weatherId"></div>
+          <div id="tempId"></div>
+          <div id="weatherImage">
+            <img id="weatherImageId" />
+          </div>
+          <div id="othersContainer">
+            <div class="small_box">
+              <img
+                class="small_icon"
+                src="../static/images/icons/pressure.png"
+                alt=""
+              />
+              <p id="pressureId" class="small_text"></p>
+            </div>
+            <div class="small_box">
+              <img
+                class="small_icon"
+                src="../static/images/icons/humidity.png"
+                alt=""
+              />
+              <p id="humidityId" class="small_text"></p>
+            </div>
+            <div class="small_box">
+              <img class="small_icon" src="../static/images/icons/wind.png" />
+              <p id="windSpeedId" class="small_text"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="ridePlannerPopup">
+        <div class="closeBtnContainer" onclick="onClosePressed(this)">
+            <img class="closeBtn" src="../static/images/icons/close.png" alt="" />
+        </div>
+        <div class="inputRow">
+            <div class="startStationLabel">Start Station</div>
+            <div class="datePicker">
+                <div class="label">Date</div>
+                <div>
+                    <input type="date" class="startDate" min="" max="" value="" />
+                </div>
+            </div>
+        </div>
+        <input
+            type="text"
+            class="stationInput"
+            placeholder="Search"
+            onkeydown="handleKeyDown(event)"
+            oninput="search(this)"
+            autofocus
+        />
+        <ul class="searchResults"></ul>
+        <div class="dateTimePicker">
+            <div class="row">
+                <div class="label">Time</div>
+                <div class="input">
+                    <input type="time" id="startTime" value="" min="" />
+                </div>
+            </div>
+        </div>
+        <div class="endStationLabel">End Station</div>
+        <input
+            type="text"
+            class="stationInput"
+            placeholder="Search"
+            onkeydown="handleKeyDown(event)"
+            oninput="search(this)"
+            autofocus
+        />
+        <ul class="searchResults"></ul>
+        <div class="dateTimePicker">
+            <div class="row">
+                <div class="label">Time</div>
+                <div class="input">
+                    <input type="time" id="endTime" value="" />
+                </div>
+            </div>
+        </div>
+        <div class="primary_btn" onclick="planDataToFlask()">Confirm</div>
+    </div>
+      <div id="stationChartPopup">
+        <div
+          style="
+            position: absolute;
+            padding: 20px 5px;
+            font-size: small;
+            font-weight: 800;
+            color: var(--primary_purple);
+          "
+        >
+          <div style="display: flex; justify-content: start">
+            <div>Station:</div>
+            <div id="stationNoId">11</div>
+          </div>
+          <div style="display: flex; justify-content: start">
+            <div>Today:</div>
+            <div id="dayId">Friday</div>
+          </div>
+        </div>
+        <div
+          style="
+            display: flex;
+            justify-content: end;
+            margin: 10px 10px -20px 0px;
+          "
+          onclick="onClosePressed(this)"
+        >
+          <img class="closeBtn" src="../static/images/icons/close.png" alt="" />
+        </div>
+        <div class="chart_text">Prediction Chart</div>
+        <div class="stationInfo">
+          <canvas id="nextFiveDayChart"></canvas>
+        </div>
+        <div class="chart_text">History Chart</div>
+        <div class="stationInfo">
+          <canvas id="stationInfoChart"></canvas>
+        </div>
+      </div>
+      <div id="glowContainer">
+        <div id="glow_bg"></div>
+        <div id="glow_info">
+          <div
+            id="smallGlow"
+            class="marker_dot"
+            style="height: 20px; width: 20px"
+          ></div>
+          <div class="glow_text">Less Bikes</div>
+          <div
+            id="normalGlow"
+            class="marker_dot"
+            style="height: 20px; width: 20px"
+          ></div>
+          <div class="glow_text">Moderate Bikes</div>
+          <div
+            id="bigGlow"
+            class="marker_dot"
+            style="height: 20px; width: 20px"
+          ></div>
+          <div class="glow_text">Lot of Bikes!</div>
+        </div>
+      </div>
+      <div id="mapContainer"></div>
+    </div>
+    <script defer src="{{ url_for('static', filename='js/index.js')}}"></script>
+  </body>
+</html>
